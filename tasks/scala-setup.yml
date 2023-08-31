@@ -28,8 +28,8 @@
 - name: Install Scala 2
   shell: |
     cd {{ ansible_env.HOME }} &&
-    {{ lookup('env', 'HOME') }}/cs install scala:2.13.11 &&
-    {{ lookup('env', 'HOME') }}/cs install scalac:2.13.11
+    ./cs install scala:2.13.11 &&
+    ./cs install scalac:2.13.11
   args:
     executable: /bin/bash
   tags:
