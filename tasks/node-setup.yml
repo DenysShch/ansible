@@ -1,0 +1,16 @@
+- name: Set Node 16 version 
+  shell: |
+    cd {{ ansible_env.HOME }} |
+    curl -sL https://deb.nodesource.com/setup_16.x | sudo bash 
+  tags:
+    - install
+    - node
+
+- name: Install nodejs and npm
+  become: true
+  apt:
+    name: ["nodejs"]
+  tags:
+    - install
+    - node
+

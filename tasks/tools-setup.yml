@@ -1,0 +1,93 @@
+- name: Install Tools (visidata, ripgrep, mc, tldr, ncdu, bat, pass, fd-find) 
+  become: true
+  apt:
+    name: ["visidata", "ripgrep", "mc", "tldr", "ncdu", "bat", "pass", "fd-find"]
+  tags:
+    - install
+    - tools
+
+- name: Updata tldr 
+  become: true
+  shell: |
+    tldr init
+  args:
+    executable: /bin/bash
+  tags:
+    - install
+    - tools
+
+- name: FZF Exists?
+  stat:
+    path: "{{ personal }}/junegunn/fzf"
+  register: node_fzf
+  tags:
+    - install
+    - tools
+    - fzf
+
+- name: Clone FZF 
+  ansible.builtin.git:
+    repo: 'https://github.com/junegunn/fzf.git'
+    dest: "{{ personal }}/junegunn/fzf"
+  tags:
+    - install
+    - fzf
+  when: node_fzf.stat.exists == False
+
+- name: Install FZF 
+  shell: cd {{ personal }}/junegunn/fzf && ./install 
+  tags:
+    - install
+    - fzf
+
+- name: Get latest Lazygit release version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/jesseduffield/lazygit/releases/latest
+    method: GET
+    return_content: yes
+  register: lazygit_release
+  tags:
+    - install
+    - lazygit
+
+- name: Extract Lazygit version from API response
+  set_fact:
+    lazygit_version: "{{ lazygit_release.json.tag_name | regex_replace('^v', '') }}"
+  tags:
+    - install
+    - lazygit
+
+- name: Download Lazygit archive
+  get_url:
+    url: "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
+    dest: "{{ downloads }}/lazygit.tar.gz"
+  tags:
+    - install
+    - lazygit
+
+- name: Extract Lazygit binary
+  unarchive:
+    src: "{{ downloads }}/lazygit.tar.gz"
+    dest: "{{ downloads }}"
+    remote_src: yes
+    creates: "{{ downloads }}/lazygit"
+  tags:
+    - install
+    - lazygit
+
+- name: Install Lazygit binary
+  become: true
+  shell: cd {{ downloads }} && sudo install lazygit /usr/local/bin 
+  args:
+    executable: /bin/bash
+  tags:
+    - install
+    - lazygit
+
+- name: Install tmux plugin manager
+  ansible.builtin.git:
+    repo: 'https://github.com/tmux-plugins/tpm'
+    dest: "{{ lookup('env', 'HOME') }}/.tmux/plugins/tpm"
+  tags:
+    - install
+    - tmux

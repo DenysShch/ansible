@@ -1,0 +1,43 @@
+- name: Install JDK
+  become: true
+  apt:
+    name: ["openjdk-11-jdk"]
+  tags:
+    - install
+    - scala
+
+- name: Download CS 
+  shell: |
+    curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64-pc-linux.gz |
+    gzip -d > cs && chmod +x cs
+  args:
+    executable: /bin/bash
+  tags:
+    - install
+    - scala
+
+- name: Install CS 
+  shell: yes 'y' | ./cs setup
+  args:
+    executable: /bin/bash
+  tags:
+    - install
+    - scala
+
+- name: Install Scala 2
+  shell: ~/cs install scala:2.13.11 && ~/cs install scalac:2.13.11
+  args:
+    executable: /bin/bash
+  tags:
+    - install
+    - scala
+
+- name: Add scala to path
+  shell: |
+    echo 'export PATH="$PATH:/home/den/.local/share/coursier/bin"' >> "{{ ansible_env.HOME }}/.bashrc" |
+    source "{{ ansible_env.HOME }}/.bashrc"
+  args:
+    executable: /bin/bash
+  tags:
+    - install
+    - scala

@@ -1,0 +1,57 @@
+- name: Installing stow
+  become: true
+  apt: name=stow
+  tags:
+    - install
+    - dotfiles
+    - stow
+
+- name: Cloning .dotfiles
+  ansible.builtin.git:
+    repo: 'git@github.com:DenysShch/.dotfiles.git'
+    dest: "{{ lookup('env', 'HOME') }}/.dotfiles"
+    recursive: yes
+    update: yes
+    accept_hostkey: yes
+    version: main
+  tags:
+  - install
+  - dotfiles
+  - stow
+
+- name: Change file mode to executable
+  become: true
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME') }}/.dotfiles/ubuntu" 
+    mode: 'u+x'
+  tags:
+  - install
+  - dotfiles
+  - stow
+
+- name: Change file mode to executable
+  become: true
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME') }}/.dotfiles/install" 
+    mode: 'u+x'
+  tags:
+  - install
+  - dotfiles
+  - stow
+
+- name: Change file mode to executable
+  become: true
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME') }}/.dotfiles/scripts/tmux-sessionizer" 
+    mode: 'u+x'
+  tags:
+  - install
+  - dotfiles
+  - stow
+
+- name: Stow dotfiles
+  shell: cd $HOME/.dotfiles && ./ubuntu
+  tags:
+  - install
+  - dotfiles
+  - stow

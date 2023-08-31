@@ -1,0 +1,57 @@
+- name: Ensure .ssh directory exists.
+  file:
+    dest: "{{ dest_ssh | dirname }}"
+    mode: 0700
+    state: directory
+  tags:
+    - dotfiles
+    - install
+    - ssh
+
+- name: Install ssh key
+  become: true
+  copy:
+    src: "{{ playbook_dir }}/{{ source_ssh }}/id_rsa"
+    dest: "{{ dest_ssh }}/"
+    owner: den
+    group: den
+    mode: 0600
+    remote_src: yes
+  tags:
+    - dotfiles
+    - install
+    - ssh
+
+- name: Install ssh key public
+  become: true
+  copy:
+    src: "{{ playbook_dir }}/{{ source_ssh }}/id_rsa.pub"
+    dest: "{{ dest_ssh }}/"
+    mode: 0644
+    owner: den
+    group: den
+    remote_src: yes
+  tags:
+    - dotfiles
+    - install
+    - ssh
+
+- name: Set authorized key took from file
+  authorized_key:
+    user: "den"
+    state: present
+    key: "{{ lookup('file', item) }}"
+  with_fileglob:
+    - "{{ lookup('env', 'HOME') }}/.ssh/*.pub"
+  tags:
+    - dotfiles
+    - install
+    - ssh
+
+- name: Decrypt ssh key
+  ansible.builtin.shell: |
+    ansible-vault decrypt {{ dest_ssh }}/id_rsa
+  tags:
+    - dotfiles
+    - install
+    - ssh

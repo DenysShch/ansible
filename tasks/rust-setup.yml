@@ -1,0 +1,29 @@
+- name: Required libraries for hist-cli for (cargo package)
+  become: true
+  apt:
+    name: ["libfreetype6-dev"]
+  tags:
+    - hist
+    - install
+    - rust
+
+- name: Install Rust
+  shell: |
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | 
+    sh -s -- -y
+  args:
+    executable: /bin/bash
+  tags:
+    - install
+    - rust
+
+- name: Add Rust to PATH
+  become: true
+  shell: |
+    echo 'export PATH="$PATH:$HOME/.cargo/bin"' >> "{{ ansible_env.HOME }}/.bashrc" |
+    source "{{ ansible_env.HOME }}/.bashrc"
+  args:
+    executable: /bin/bash
+  tags:
+    - install
+    - rust
