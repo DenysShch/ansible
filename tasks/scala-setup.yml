@@ -8,7 +8,7 @@
 
 - name: Download CS 
   shell: |
-    cd {{ lookup('env', 'HOME') }} &&
+    cd {{ ansible_env.HOME }} &&
     curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64-pc-linux.gz |
     gzip -d > cs && chmod +x cs
   args:
@@ -26,7 +26,7 @@
     - scala
 
 - name: Install Scala 2
-  shell: {{ lookup('env', 'HOME') }}/cs install scala:2.13.11 && {{ lookup('env', 'HOME') }}/cs install scalac:2.13.11
+  shell: ./{{ ansible_env.HOME }}/cs install scala:2.13.11 && ./{{ ansible_env.HOME }}/cs install scalac:2.13.11
   args:
     executable: /bin/bash
   tags:
