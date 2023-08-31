@@ -18,7 +18,9 @@
     - scala
 
 - name: Install CS 
-  shell: yes 'y' | .{{ lookup('env', 'HOME') }}/cs setup
+  shell: |
+    cd {{ ansible_env.HOME }} &&
+    yes 'y' | ./cs setup
   args:
     executable: /bin/bash
   tags:
