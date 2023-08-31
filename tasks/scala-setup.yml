@@ -18,7 +18,7 @@
     - scala
 
 - name: Install CS 
-  shell: yes 'y' | ./cs setup
+  shell: yes 'y' | .{{ lookup('env', 'HOME') }}/cs setup
   args:
     executable: /bin/bash
   tags:
@@ -26,7 +26,7 @@
     - scala
 
 - name: Install Scala 2
-  shell: ~/cs install scala:2.13.11 && ~/cs install scalac:2.13.11
+  shell: {{ lookup('env', 'HOME') }}/cs install scala:2.13.11 && {{ lookup('env', 'HOME') }}/cs install scalac:2.13.11
   args:
     executable: /bin/bash
   tags:
