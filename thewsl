@@ -25,4 +25,14 @@
       - work
       - learn
   tasks:
+    - include_tasks: tasks/ssh-setup.yml
+    - include_tasks: tasks/git-setup.yml
+    - include_tasks: tasks/zsh-setup.yml
+    - include_tasks: tasks/dotfiles-setup.yml
+    - include_tasks: tasks/core-setup.yml
+    - include_tasks: tasks/tools-setup.yml
+    - include_tasks: tasks/node-setup.yml
+    - include_tasks: tasks/python-setup.yml
+    - include_tasks: tasks/rust-setup.yml
     - include_tasks: tasks/scala-setup.yml
+    - include_tasks: tasks/nvim-setup.yml
