@@ -18,3 +18,6 @@ ansible-playbook --ask-become-pass --ask-vault-pass wsl.yml
 ansible-playbook -t neovim --ask-become-pass --ask-vault-pass wsl.yml
 ```
 
+```shell
+ansible-vault encrypt .dir/*/*
+```
