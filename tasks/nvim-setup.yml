@@ -20,7 +20,7 @@
 
 - name: Install neovim
   become: true
-  shell: "cd {{ lookup('env', 'HOME') }}/neovim && git checkout stable &&make install"
+  shell: "cd {{ lookup('env', 'HOME') }}/neovim && git checkout stable && make CMAKE_BUILD_TYPE=Release && make install"
   tags:
     - install
     - neovim
