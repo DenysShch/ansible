@@ -22,7 +22,7 @@
 - name: Change file mode to executable
   become: true
   ansible.builtin.file:
-    path: "{{ lookup('env', 'HOME') }}/.dotfiles/ubuntu" 
+    path: "{{ lookup('env', 'HOME') }}/.dotfiles/ubuntu"
     mode: 'u+x'
   tags:
   - install
@@ -32,17 +32,7 @@
 - name: Change file mode to executable
   become: true
   ansible.builtin.file:
-    path: "{{ lookup('env', 'HOME') }}/.dotfiles/install" 
-    mode: 'u+x'
-  tags:
-  - install
-  - dotfiles
-  - stow
-
-- name: Change file mode to executable
-  become: true
-  ansible.builtin.file:
-    path: "{{ lookup('env', 'HOME') }}/.dotfiles/scripts/tmux-sessionizer" 
+    path: "{{ lookup('env', 'HOME') }}/.dotfiles/install"
     mode: 'u+x'
   tags:
   - install
