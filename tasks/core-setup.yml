@@ -1,5 +1,7 @@
 - name: Install System Packages 1 (build-essential, cmake, pkg-config, pthread)
   become: true
+  poll: 10
+  async: 3600
   apt:
     name: ["build-essential", "cmake", "pkg-config", "libpthread-stubs0-dev"]
   tags:
@@ -9,6 +11,8 @@
 
 - name: Install System Packages 2 (lua, unzip, libtool, libtool-bin, gettext)
   become: true
+  async: 3600
+  poll: 10
   apt:
     name: [ "lua5.1", "unzip", "libtool", "libtool-bin", "gettext"]
   tags:
@@ -18,6 +22,8 @@
 
 - name: Install System Packages 3 (the rest)
   become: true
+  async: 3600
+  poll: 10
   apt:
     name: [ "curl", "htop", "python3-pip", "vim", "tmux"]
   tags:

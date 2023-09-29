@@ -1,4 +1,7 @@
 - name: Set Node 16 version 
+  become: true
+  async: 3600
+  poll: 10
   shell: |
     cd {{ ansible_env.HOME }} |
     curl -sL https://deb.nodesource.com/setup_16.x | sudo bash 
@@ -7,6 +10,8 @@
     - node
 
 - name: Install nodejs and npm
+  async: 3600
+  poll: 10
   become: true
   apt:
     name: ["nodejs"]

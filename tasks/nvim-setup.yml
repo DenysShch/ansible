@@ -1,4 +1,6 @@
 - name: Remove neovim
+  async: 3600
+  poll: 10
   file:
     path: ~/neovim
     state: absent
@@ -7,6 +9,8 @@
     - neovim
 
 - name: Clone Neovim
+  async: 3600
+  poll: 10
   ansible.builtin.git:
     repo: 'https://github.com/neovim/neovim.git'
     dest: "{{ lookup('env', 'HOME') }}/neovim"
@@ -15,18 +19,24 @@
     - neovim
 
 - name: Build neovim
+  async: 3600
+  poll: 10
   shell: "cd {{ lookup('env', 'HOME') }}/neovim && make -j 20 && make distclean && make deps"
   tags:
     - install
     - neovim
 
 - name: Install build
+  async: 3600
+  poll: 10
   shell: "cd {{ lookup('env', 'HOME') }}/neovim && git checkout stable && make CMAKE_BUILD_TYPE=Release"
   tags:
     - install
     - neovim
 
 - name: Install neovim
+  async: 3600
+  poll: 10
   become: true
   shell: "cd {{ lookup('env', 'HOME') }}/neovim && make install"
   tags:

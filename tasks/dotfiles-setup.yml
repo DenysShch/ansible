@@ -1,5 +1,7 @@
 - name: Installing stow
   become: true
+  async: 3600
+  poll: 10
   apt: name=stow
   tags:
     - install
@@ -7,6 +9,8 @@
     - stow
 
 - name: Cloning .dotfiles
+  async: 3600
+  poll: 10
   ansible.builtin.git:
     repo: 'git@github.com:DenysShch/.dotfiles.git'
     dest: "{{ lookup('env', 'HOME') }}/.dotfiles"
@@ -20,6 +24,8 @@
   - stow
 
 - name: Change file mode to executable
+  async: 3600
+  poll: 10
   become: true
   ansible.builtin.file:
     path: "{{ lookup('env', 'HOME') }}/.dotfiles/ubuntu"
@@ -30,6 +36,8 @@
   - stow
 
 - name: Change file mode to executable
+  async: 3600
+  poll: 10
   become: true
   ansible.builtin.file:
     path: "{{ lookup('env', 'HOME') }}/.dotfiles/install"
@@ -40,6 +48,8 @@
   - stow
 
 - name: Stow dotfiles
+  async: 3600
+  poll: 10
   shell: cd $HOME/.dotfiles && ./ubuntu
   tags:
   - install
