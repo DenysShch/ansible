@@ -1,12 +1,12 @@
-- name: Install Tools (visidata, ripgrep, mc, tldr, ncdu, bat, pass, fd-find) 
+- name: Install Tools (visidata, ripgrep, mc, tldr, ncdu, bat, pass, fd-find, zoxide)
   become: true
   apt:
-    name: ["visidata", "ripgrep", "mc", "tldr", "ncdu", "bat", "pass", "fd-find"]
+    name: ["visidata", "ripgrep", "mc", "tldr", "ncdu", "bat", "pass", "fd-find", "zoxide"]
   tags:
     - install
     - tools
 
-- name: Updata tldr 
+- name: Updata tldr
   become: true
   shell: |
     tldr init
@@ -25,7 +25,7 @@
     - tools
     - fzf
 
-- name: Clone FZF 
+- name: Clone FZF
   ansible.builtin.git:
     repo: 'https://github.com/junegunn/fzf.git'
     dest: "{{ personal }}/junegunn/fzf"
@@ -34,8 +34,8 @@
     - fzf
   when: node_fzf.stat.exists == False
 
-- name: Install FZF 
-  shell: cd {{ personal }}/junegunn/fzf && ./install 
+- name: Install FZF
+  shell: cd {{ personal }}/junegunn/fzf && ./install
   tags:
     - install
     - fzf
@@ -77,7 +77,7 @@
 
 - name: Install Lazygit binary
   become: true
-  shell: cd {{ downloads }} && sudo install lazygit /usr/local/bin 
+  shell: cd {{ downloads }} && sudo install lazygit /usr/local/bin
   args:
     executable: /bin/bash
   tags:
